@@ -32,10 +32,14 @@
         <a class="dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false"> <img src="{% static 'images/blankprofile.jpg' %}" alt="" width="30" height="30"></a>
            <!-- dropdown bar items -->
           <ul class="dropdown-menu dropdown-menu-end">
-            <li><a class="dropdown-item" href="profile">Profile</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
+            {% if user.is_authenticated %}
+              <li><a class="dropdown-item" href="profile">Profile</a></li>
+              <li><a class="dropdown-item" href="{% url 'logout' %}" id="logout-button">logout</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="#">Something else here</a></li>
+            {% else %}
+              <li><a href="login">Login</a></li>
+            {% endif %}
           </ul>
        
       </div>
