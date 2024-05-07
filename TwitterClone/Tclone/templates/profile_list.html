@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% if user.is_authenticated %}
+        <h1> Profile list </h1>
+
+        {% if profiles %}
+            {% for profile in profiles %}
+
+            <div class="card mb-3" style="max-width: 540px;">
+                <div class="row g-0">
+                <div class="col-md-4">
+                    {% if profile.profile_image %}
+                        
+                        <img src= "{{ profile.profile_image.url }}" class="img-fluid rounded-start" alt="...">
+                    {% else %}
+                        <!-- Display default profile-->
+                        <img src= "" class="img-fluid rounded-start" alt="...">
+                    {% endif %}
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                    <h5 class="card-title">@{{profile.user.username}}</h5>
+                    <p class="card-text">this is where we could add something fun!</p></br>
+                    <a class="btn btn-primary" href="{% url 'profile' profile.user.id %}" role="button">See Profile</a>
+                    <p class="card-text"><small class="text-body-secondary">Last updated {{profile.data_modified}}</small></p>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+            {% endfor %}
+        {% endif %}
+    {% else %}
+    <div class="alert alert-warning" role="alert">
+        You must be logged in to see this page. 
+        <a href="login">Login</a>
+      </div>
+    {% endif %}
+    {% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1> User Registration </h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="reg-username">Username</label>
+        <input type="text" name="username" id="reg-username"></br>
+
+        <labe; for="reg-password">Password</label>
+        <input type="password" name="password" id ="reg-password"></br>
+        <button type="submit" >Register</button>
+    </form>
+    <!-- on failed attempt display -->
+    {% if error_message %}
+        <p>{{ error_message }}</p>
+    {% endif %}
+
+    <p>Already got an account?</p>
+    <a href="login">Login Here</a>
+{% endblock %}

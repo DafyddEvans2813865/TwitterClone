@@ -1,8 +1,9 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
+{% load static %} 
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #ebd512;">
     <div class="container-fluid">
         <!-- Nav bar logo (incase logo change) -->
-      <a class="navbar-brand" href="#"><img src="/docs/5.3/assets/brand/bootstrap-logo.svg" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
-        Tclone</a>
+      <a class="navbar-brand" href="/"><img src="{% static 'images/logo.jpg' %}" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+        Zappy</a>
 
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -15,27 +16,34 @@
             <a class="nav-link active" aria-current="page" href="/">Home</a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" href="{% url 'profile_list' %}">Find new Users</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="about">about</a>
           </li>
           
-            <!-- dropdown bar items -->
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Settings
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
-            </ul>
-          </li>
+      
 
         </ul>
-        <form class="d-flex" role="search">
+        <form class="d-flex me-3" role="search">
           <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
           <button class="btn btn-outline-success" type="submit">Search</button>
         </form>
+
+        <!-- Nav bar profile -->
+        <a class="dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false"> <img src="{% static 'images/blankprofile.jpg' %}" alt="" width="30" height="30"></a>
+           <!-- dropdown bar items -->
+          <ul class="dropdown-menu dropdown-menu-end">
+            {% if user.is_authenticated %}
+              <li><a class="dropdown-item" href="{% url 'profile' request.user.id %}">Profile</a></li>
+              <li><a class="dropdown-item" href="{% url 'logout' %}" id="logout-button">logout</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="#">Something else here</a></li>
+            {% else %}
+              <li><a href="login">Login</a></li>
+            {% endif %}
+          </ul>
+       
       </div>
     </div>
   </nav>
