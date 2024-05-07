@@ -1,5 +1,4 @@
 {% load static %} 
-
 <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #ebd512;">
     <div class="container-fluid">
         <!-- Nav bar logo (incase logo change) -->
@@ -15,6 +14,9 @@
             <!-- Nav bar items -->
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'profile_list' %}">Find new Users</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="about">about</a>
@@ -33,7 +35,7 @@
            <!-- dropdown bar items -->
           <ul class="dropdown-menu dropdown-menu-end">
             {% if user.is_authenticated %}
-              <li><a class="dropdown-item" href="profile">Profile</a></li>
+              <li><a class="dropdown-item" href="{% url 'profile' request.user.id %}">Profile</a></li>
               <li><a class="dropdown-item" href="{% url 'logout' %}" id="logout-button">logout</a></li>
               <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item" href="#">Something else here</a></li>

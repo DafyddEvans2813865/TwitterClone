@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User 
+from .models import Profile
 from .forms import LoginForm
 
 
@@ -10,12 +11,15 @@ def home(request):
 def about(request):
     return render(request,'about.html', {})
 
-def profile(request):
+def profile(request, pk):
+    if request.user.is_authenticated:
+        context_dict = {}
+        profile = Profile.objects.get(user=pk)
+        context_dict['profile'] = profile
+        context_dict['profile_user'] = profile.user
+        context_dict['profile_following'] = profile.user.profile.follows.all()
 
-    context_dict = {}
-    context_dict['user'] = request.user
-
-    return render(request,'profile.html', context=context_dict)
+    return render(request, 'profile.html',context=context_dict)
 
 def register(request):
     return render(request, "register.html", {})
@@ -29,7 +33,7 @@ def login_view(request):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('profile')  # Redirect to profile upon successful login
+                return redirect('home')  # Redirect to profile upon successful login
             else:
                 error_message = "Invalid username or password"
                 return render(request, 'login.html', {'form': form, 'error_message': error_message})
@@ -58,3 +62,10 @@ def register(request):
         return redirect('profile')
     return render(request, 'register.html', context_dict)
         
+def profile_list(request):
+    context_dict = {}
+    
+    if request.user.is_authenticated:
+        #list of all user excluding self 
+        context_dict['profiles'] = Profile.objects.exclude(user=request.user)
+    return render(request, 'profile_list.html',context_dict)

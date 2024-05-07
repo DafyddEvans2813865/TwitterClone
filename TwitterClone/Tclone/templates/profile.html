@@ -1,14 +1,32 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
-    <h1>Profile not implemented</h1>
+{% if user.is_authenticated %}
     <head>
-        <title>User Profile</title>
+        <h2>{{ profile_user }}'s Profile!</h2>
     </head>
-    <body>
-        <h1>Welcome, {{ user.username }}!</h1>
+    <body>        
+        {% if profile_following %}
+        </br>
+        <h3>Users {{ profile_user }} follows:</h3></br>
+        <ul>
+            {% for followed_user in profile_following %}
+                <a href="{% url 'profile' followed_user.user.id %}">@{{ followed_user }}</a></br>
+            {% endfor %}
+
+
+
+        </ul>
+        {% else %}
+            <p>You are not following anyone yet.</p>
+        {% endif %}
     </body>
     </html>
+{% else %}
+    <div class="alert alert-warning" role="alert">
+        You must be logged in to see this page. 
+        <a href="login">Login</a>
+      </div>
+{% endif %}
 
 {% endblock %}
