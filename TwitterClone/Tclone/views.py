@@ -17,7 +17,6 @@ def profile(request, pk):
 
         profile = Profile.objects.get(user=pk)
         context_dict['profile'] = profile
-        context_dict['profile_following'] = profile.user.profile.follows.all()
         
         #request to follow or unfollow the user  
         if request.method == 'POST':
