@@ -2,20 +2,32 @@
 
 {% block content %}
 {% if user.is_authenticated %}
+
     <head>
-        <h2>{{ profile_user }}'s Profile!</h2>
+        <h2>{{ profile.user }}'s Profile!</h2>
+
+        <!-- Follow or Unfollow buttons -->
+        <form method="post" action="{% url 'profile' profile.user.id %}">
+            {% csrf_token %}
+            {% if profile in user.profile.follows.all %}
+                <input type="hidden" name="unfollow_user" value="{{ profile_user.id }}">
+                <button class="btn btn-primary" type="submit">following</button>
+            {% else %} 
+                <input type="hidden" name="follow_user" value="{{ profile_user.id }}">
+                <button class="btn btn-primary" type="submit">follow</button>
+            {% endif %}
+        </form>
+
     </head>
-    <body>        
+    <body>
+        <!-- Profile Following list -->        
         {% if profile_following %}
         </br>
-        <h3>Users {{ profile_user }} follows:</h3></br>
+        <h3>Users {{ profile.user }} follows:</h3></br>
         <ul>
             {% for followed_user in profile_following %}
                 <a href="{% url 'profile' followed_user.user.id %}">@{{ followed_user }}</a></br>
             {% endfor %}
-
-
-
         </ul>
         {% else %}
             <p>You are not following anyone yet.</p>
@@ -23,6 +35,7 @@
     </body>
     </html>
 {% else %}
+    <!-- if not logged in-->
     <div class="alert alert-warning" role="alert">
         You must be logged in to see this page. 
         <a href="login">Login</a>

@@ -14,10 +14,20 @@ def about(request):
 def profile(request, pk):
     if request.user.is_authenticated:
         context_dict = {}
+
         profile = Profile.objects.get(user=pk)
         context_dict['profile'] = profile
-        context_dict['profile_user'] = profile.user
         context_dict['profile_following'] = profile.user.profile.follows.all()
+        
+        #request to follow or unfollow the user  
+        if request.method == 'POST':
+
+            if 'follow_user' in request.POST:
+                request.user.profile.follows.add(profile)
+            
+            elif 'unfollow_user' in request.POST:
+                request.user.profile.follows.remove(profile)
+
 
     return render(request, 'profile.html',context=context_dict)
 
