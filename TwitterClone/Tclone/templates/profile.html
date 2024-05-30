@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
 <html>
     {% if user.is_authenticated %}
@@ -8,7 +8,12 @@
             <div class="row">
                 <!-- Profile Picture -->
                 <div class="col-1 text-right">
-                    <img src="{{ user.profile.profile_image.url }}" alt="{{ user.username }}'s Profile Picture" class="img-fluid">
+                    {% if profile.profile_image %}
+                        <img src="{{ profile.profile_image.url }}" class="img-fluid">
+                    <!--default picture-->
+                    {% else %}
+                        <img src="{% static 'images/blankprofile.jpg' %}" class="img-fluid">
+                    {% endif %}
                 </div>
 
                 <div class="col-8">

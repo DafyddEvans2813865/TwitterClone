@@ -1,5 +1,12 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1> HEllO WORLD </h1>
+    <h1> Zappy bolts! </h1><br/>
+
+    {%for bolt in bolts %}
+        <div class="alert alert-warning" role="alert">
+            {{bolt}}<br/>  
+        </div>
+    {% endfor %}
+
 {% endblock %}

@@ -32,14 +32,19 @@
 
         <!-- Nav bar profile -->
         {% if user.is_authenticated %}
-          <a class="dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false"> <img src="{{ user.profile.profile_image.url }}" alt="" width="30" height="30"></a>
-            <!-- dropdown bar items -->
-            <ul class="dropdown-menu dropdown-menu-end">
-              <li><a class="dropdown-item" href="{% url 'profile' request.user.id %}">Profile</a></li>
-              <li><a class="dropdown-item" href="{% url 'logout' %}" id="logout-button">logout</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
-            </ul>
+          <!-- Profile Picture -->
+          {% if profile.profile_image %}
+            <a class="dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false"> <img src="{{ user.profile.profile_image.url }}" alt="" width="30" height="30"></a>
+          {% else %}
+          <a class="dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false"> <img src="{% static 'images/blankprofile.jpg' %}" alt="" width="30" height="30"></a>
+          {% endif %}
+              <!-- dropdown bar items -->
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" href="{% url 'profile' request.user.id %}">Profile</a></li>
+                <li><a class="dropdown-item" href="{% url 'logout' %}" id="logout-button">logout</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="#">Something else here</a></li>
+              </ul>
         {% else %}
           <a class="dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false"> <img src="{% static 'images/blankprofile.jpg' %}" alt="" width="30" height="30"></a>
             <ul class="dropdown-menu dropdown-menu-end">  

@@ -24,3 +24,19 @@ def create_profile(sender, instance, created, **kwargs):
         #follow self and myself
         user_profile.follows.set([instance.profile.id,User.objects.get(username='evans').id])
         user_profile.save()
+
+#tweeting model 
+class Bolt(models.Model):
+    user = models.ForeignKey(
+        User, related_name='bolts',
+        on_delete=models.DO_NOTHING
+        )
+    body = models.CharField(max_length=250)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return(
+            f"{self.user}, "
+            f"({self.created_at:%d-%m-%Y %H/%M}): "
+            f"{self.body}... "
+            )

@@ -1,12 +1,15 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User 
-from .models import Profile
+from .models import Profile, Bolt 
 from .forms import LoginForm
 
 
 def home(request):
-    return render(request, 'home.html', {})
+    context_dict = {}
+    context_dict['bolts'] = Bolt.objects.all().order_by("-created_at") 
+
+    return render(request, 'home.html', context=context_dict)
 
 def about(request):
     return render(request,'about.html', {})
