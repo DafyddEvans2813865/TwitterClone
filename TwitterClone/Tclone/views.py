@@ -19,8 +19,11 @@ def profile(request, pk):
         context_dict = {}
 
         profile = Profile.objects.get(user=pk)
+        bolts = Bolt.objects.filter(user=pk).order_by("-created_at")
+
         context_dict['profile'] = profile
-        
+        context_dict['bolts'] = bolts
+
         #request to follow or unfollow the user  
         if request.method == 'POST':
 

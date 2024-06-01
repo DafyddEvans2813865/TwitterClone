@@ -31,6 +31,17 @@
                                 <button class="btn btn-primary" type="submit">follow</button>
                             {% endif %}
                         </form>
+                        <br/><br/><br/>
+
+                        <!-- Adding bolts to profile page -->
+                        {% if bolts %}
+                            {%for bolt in bolts %}
+                                <div class="alert alert-warning" role="alert">
+                                    {{bolt}}<br/>  
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+
                     </body>
                     
                 </div>
@@ -84,6 +95,13 @@
 
             </div>
         </div>
+
+
+        
+
+
+
+
     {% else %}
         <!-- if not logged in-->
         <div class="alert alert-warning" role="alert">
