@@ -1,12 +1,38 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1> Zappy bolts! </h1><br/>
 
-    {%for bolt in bolts %}
-        <div class="alert alert-warning" role="alert">
-            {{bolt}}<br/>  
+<h1> Zappy bolts! </h1><br/>
+    <div class="container text-center">
+        <div class="row">
+            <div class = "col-8">
+
+                {%for bolt in bolts %}
+                    <div class="alert alert-warning" role="alert">
+                        {{bolt.body}}<br/>
+                        <small class="text-muted">
+                             By @{{bolt.user}} at {{bolt.created_at}}
+                            
+                        </small> 
+                    </div>
+                {% endfor %}     
+
+            </div>
+
+            <div class = "col-4">
+                {% if form %}
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-secondary">Zap!</button>
+                </form>
+                {% endif %}
+            </div>
         </div>
-    {% endfor %}
+    </div>
+
+    
+
+
 
 {% endblock %}

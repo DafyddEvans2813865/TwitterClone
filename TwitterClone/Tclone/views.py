@@ -2,13 +2,24 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User 
 from .models import Profile, Bolt 
-from .forms import LoginForm
+from .forms import LoginForm, BoltPostForm
 
 
 def home(request):
     context_dict = {}
     context_dict['bolts'] = Bolt.objects.all().order_by("-created_at") 
 
+    if request.user.is_authenticated:
+
+        ##check if user is trying to post a bolt 
+        form = BoltPostForm(request.POST or None)
+        context_dict["form"] = form
+        if request.method == "POST":
+            if form.is_valid():
+                bolt = form.save(commit=False)
+                bolt.user = request.user
+                bolt.save()
+                
     return render(request, 'home.html', context=context_dict)
 
 def about(request):

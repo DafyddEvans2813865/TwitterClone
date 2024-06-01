@@ -37,7 +37,11 @@
                         {% if bolts %}
                             {%for bolt in bolts %}
                                 <div class="alert alert-warning" role="alert">
-                                    {{bolt}}<br/>  
+                                    {{bolt.body}}<br/>
+                                    <small class="text-muted">
+                                        By @{{bolt.user}} at {{bolt.created_at}}
+                                        
+                                    </small> 
                                 </div>
                             {% endfor %}
                         {% endif %}
