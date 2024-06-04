@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User 
 from .models import Profile, Bolt 
-from .forms import LoginForm, BoltPostForm
+from .forms import LoginForm, BoltPostForm, ProfilePicForm
 
 
 def home(request):
@@ -88,6 +88,20 @@ def register(request):
         return redirect('profile')
     return render(request, 'register.html', context_dict)
         
+def profile_settings(request):
+
+    context_dict ={}
+    context_dict['user'] = request.user
+    user_profile = Profile.objects.get(user = request.user)
+
+    form = ProfilePicForm(request.POST or None,request.FILES or None, instance=user_profile)
+    context_dict['form'] = form
+   
+    if form.is_valid():
+            form.save()
+
+    return render(request,'profile_settings.html',context_dict)
+
 def profile_list(request):
     context_dict = {}
     
