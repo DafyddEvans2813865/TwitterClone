@@ -11,6 +11,7 @@ urlpatterns = [
     path('login', views.login_view, name='login'),
     path('logout', views.logout_view, name='logout'),
     path('register', views.register, name='register'),
-        path('profile_list',views.profile_list, name ='profile_list')
+    path('profile_list',views.profile_list, name='profile_list'),
+    path('bolt_like/<str:pk>',views.bolt_like, name="bolt_like")
 
 ]

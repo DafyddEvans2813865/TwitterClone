@@ -7,18 +7,29 @@
         <div class="row">
             <div class = "col-8">
 
+                <!-- bolts -->
                 {%for bolt in bolts %}
                     <div class="alert alert-warning" role="alert">
                         {{bolt.body}}<br/>
                         <small class="text-muted">
-                             By @{{bolt.user}} at {{bolt.created_at}}
-                            
+                             By @{{bolt.user}} at {{bolt.created_at}} - {{bolt.get_number_likes}} Likes
+
+                            {% if user in bolt.likes.all %}
+                                <a href="{% url 'bolt_like' bolt.id %}">
+                                    <i class="fa-solid fa-heart" style="color:red"></i>
+                                </a>
+                            {% else %}
+                                <a href="{% url 'bolt_like' bolt.id %}">
+                                    <i class="fa fa-heart-o" style="color:red"></i>
+                                </a>
+                            {% endif %}
                         </small> 
                     </div>
                 {% endfor %}     
 
             </div>
 
+            <!-- Post box -->
             <div class = "col-4">
                 {% if form %}
                 <form method="POST">

@@ -25,4 +25,4 @@ class BoltPostForm(forms.ModelForm):
     
     class Meta:
         model = Bolt
-        exclude = ("user",)
+        exclude = ("user","likes",)
