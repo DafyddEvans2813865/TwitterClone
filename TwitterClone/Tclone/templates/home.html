@@ -23,6 +23,9 @@
                                     <i class="fa fa-heart-o" style="color:red"></i>
                                 </a>
                             {% endif %}
+
+                            <a href="{% url 'bolt_share' bolt.id %}"> Share </a>
+
                         </small> 
                     </div>
                 {% endfor %}     
