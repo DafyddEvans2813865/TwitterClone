@@ -7,6 +7,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     follows = models.ManyToManyField("self", related_name="followed_by", symmetrical=False, blank=True)
     profile_image= models.ImageField(null=True,blank=True,upload_to="images/")
+    
 
     data_modified = models.DateTimeField(User, auto_now=True)
 
@@ -44,3 +45,11 @@ class Bolt(models.Model):
             f"{self.body}... "
             f"({self.created_at:%d-%m-%Y %H:%M}): "
             )
+    
+class SharedBolt(models.Model):
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    bolt = models.ForeignKey(Bolt, on_delete=models.DO_NOTHING)
+
+    def __str__(self):
+        return f"{self.user} shared {self.bolt}"
+

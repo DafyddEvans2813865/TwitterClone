@@ -50,10 +50,38 @@
                                                 <i class="fa fa-heart-o" style="color:red"></i>
                                             </a>
                                         {% endif %}
-                                        
+
+                                        <a href="{% url 'bolt_share' bolt.id %}">Share</a>
+                                                               
                                     </small> 
                                 </div>
                             {% endfor %}
+                        {% endif %}
+
+                        <!-- Display Shared Bolts -->
+                        <h3>Shared Bolts</h3>
+                        {% if shared_bolts %}
+                            {% for shared_bolt in shared_bolts %}
+                                <div class="alert alert-info" role="alert">
+                                    {{ shared_bolt.bolt.body }}<br/>
+                                    <small class="text-muted">
+                                        Shared by @{{ shared_bolt.user.username }}<br/>
+                                        Shared {{ shared_bolt.bolt.created_at }} - Originally by @{{ shared_bolt.bolt.user.username }}  - {{ shared_bolt.bolt.get_number_likes }} Likes
+
+                                        {% if user in shared_bolt.bolt.likes.all %}
+                                            <a href="{% url 'bolt_like' shared_bolt.bolt.id %}">
+                                                <i class="fa-solid fa-heart" style="color:red"></i>
+                                            </a>
+                                        {% else %}
+                                            <a href="{% url 'bolt_like' shared_bolt.bolt.id %}">
+                                                <i class="fa fa-heart-o" style="color:red"></i>
+                                            </a>
+                                        {% endif %}
+                                    </small>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <p>No shared bolts found.</p>
                         {% endif %}
 
                     </body>

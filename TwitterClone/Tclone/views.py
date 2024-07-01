@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User 
-from .models import Profile, Bolt 
+from .models import Profile, Bolt, SharedBolt
 from .forms import LoginForm, BoltPostForm, ProfilePicForm
 
 
@@ -31,9 +31,11 @@ def profile(request, pk):
 
         profile = Profile.objects.get(user=pk)
         bolts = Bolt.objects.filter(user=pk).order_by("-created_at")
-
+        shared_bolts = SharedBolt.objects.filter(user=pk).select_related('bolt')
+    
         context_dict['profile'] = profile
         context_dict['bolts'] = bolts
+        context_dict['shared_bolts'] = shared_bolts
 
         #request to follow or unfollow the user  
         if request.method == 'POST':
@@ -121,5 +123,18 @@ def bolt_like(request, pk):
             bolt.likes.add(request.user)
     #'redirects' user to current url 
     return redirect(request.META.get("HTTP_REFERER"))
+    
+def bolt_share(request, pk):
+    if request.user.is_authenticated:
+        bolt = get_object_or_404(Bolt, id=pk)
 
-        
+        # Check if this bolt has already been shared by the user
+        if SharedBolt.objects.filter(user=request.user, bolt=bolt).exists():
+            shared_bolt = SharedBolt.objects.filter(user=request.user, bolt=bolt).first().delete()
+            return redirect(request.META.get("HTTP_REFERER"))
+        else:
+            # Create a new SharedBolt record
+            
+            SharedBolt.objects.create(user=request.user, bolt=bolt)
+            return redirect(request.META.get("HTTP_REFERER"))
+    
