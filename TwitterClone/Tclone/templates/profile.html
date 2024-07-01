@@ -37,7 +37,21 @@
                         {% if bolts %}
                             {%for bolt in bolts %}
                                 <div class="alert alert-warning" role="alert">
-                                    {{bolt}}<br/>  
+                                    {{bolt.body}}<br/>
+                                    <small class="text-muted">
+                                        By @{{bolt.user}} at {{bolt.created_at}} - {{bolt.get_number_likes}} Likes
+
+                                        {% if user in bolt.likes.all %}
+                                            <a href="{% url 'bolt_like' bolt.id %}">
+                                                <i class="fa-solid fa-heart" style="color:red"></i>
+                                            </a>
+                                        {% else %}
+                                            <a href="{% url 'bolt_like' bolt.id %}">
+                                                <i class="fa fa-heart-o" style="color:red"></i>
+                                            </a>
+                                        {% endif %}
+                                        
+                                    </small> 
                                 </div>
                             {% endfor %}
                         {% endif %}
@@ -79,6 +93,7 @@
                                     <ul>
                                         {% for followed_user in profile.followed_by.all %}
                                         <a href="{% url 'profile' followed_user.user.id %}">@{{ followed_user }}</a></br>
+                                        
                                         {% endfor %}
                                     </ul>
                             {% else %}

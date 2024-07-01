@@ -1,14 +1,25 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User 
 from .models import Profile, Bolt 
-from .forms import LoginForm
+from .forms import LoginForm, BoltPostForm, ProfilePicForm
 
 
 def home(request):
     context_dict = {}
     context_dict['bolts'] = Bolt.objects.all().order_by("-created_at") 
 
+    if request.user.is_authenticated:
+
+        ##check if user is trying to post a bolt 
+        form = BoltPostForm(request.POST or None)
+        context_dict["form"] = form
+        if request.method == "POST":
+            if form.is_valid():
+                bolt = form.save(commit=False)
+                bolt.user = request.user
+                bolt.save()
+                
     return render(request, 'home.html', context=context_dict)
 
 def about(request):
@@ -77,6 +88,20 @@ def register(request):
         return redirect('profile')
     return render(request, 'register.html', context_dict)
         
+def profile_settings(request):
+
+    context_dict ={}
+    context_dict['user'] = request.user
+    user_profile = Profile.objects.get(user = request.user)
+
+    form = ProfilePicForm(request.POST or None,request.FILES or None, instance=user_profile)
+    context_dict['form'] = form
+   
+    if form.is_valid():
+            form.save()
+
+    return render(request,'profile_settings.html',context_dict)
+
 def profile_list(request):
     context_dict = {}
     
@@ -84,3 +109,17 @@ def profile_list(request):
         #list of all user excluding self 
         context_dict['profiles'] = Profile.objects.exclude(user=request.user)
     return render(request, 'profile_list.html',context_dict)
+
+def bolt_like(request, pk):
+    if request.user.is_authenticated:
+        bolt = get_object_or_404(Bolt, id=pk)
+
+        #if user already likes bolt remove them 
+        if bolt.likes.filter(id=request.user.id):
+            bolt.likes.remove(request.user)
+        else:
+            bolt.likes.add(request.user)
+    #'redirects' user to current url 
+    return redirect(request.META.get("HTTP_REFERER"))
+
+        
