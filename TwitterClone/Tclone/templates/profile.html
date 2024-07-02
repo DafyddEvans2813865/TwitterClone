@@ -40,18 +40,27 @@
                                     {{bolt.body}}<br/>
                                     <small class="text-muted">
                                         By @{{bolt.user}} at {{bolt.created_at}} - {{bolt.get_number_likes}} Likes
+                                        &nbsp;
 
                                         {% if user in bolt.likes.all %}
                                             <a href="{% url 'bolt_like' bolt.id %}">
-                                                <i class="fa-solid fa-heart" style="color:red"></i>
-                                            </a>
+                                            <i class="fa-solid fa-heart" style="color:red"></i></a>
                                         {% else %}
                                             <a href="{% url 'bolt_like' bolt.id %}">
-                                                <i class="fa fa-heart-o" style="color:red"></i>
+                                            <i class="fa fa-heart-o" style="color:red"></i></a>
+                                        {% endif %}
+                                        &nbsp;
+
+                                        <a href="{% url 'bolt_share' bolt.id %}">
+                                        <i class="fa-solid fa-share" style="color:grey" ></i></a>
+
+                                        <!-- if Profile page belongs to user allow user to delete bolts -->
+                                        {% if user == profile.user %}
+                                            &nbsp;&nbsp;&nbsp;
+                                            <a href="{% url 'delete_bolt' bolt.id %}">
+                                                <i class="fas fa-trash-alt" style="color:grey" ></i>
                                             </a>
                                         {% endif %}
-
-                                        <a href="{% url 'bolt_share' bolt.id %}">Share</a>
                                                                
                                     </small> 
                                 </div>

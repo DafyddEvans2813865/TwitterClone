@@ -1,5 +1,5 @@
 {% load static %} 
-<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #ebd512;">
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e0cc12;">
     <div class="container-fluid">
         <!-- Nav bar logo (incase logo change) -->
       <a class="navbar-brand" href="/"><img src="{% static 'images/logo.jpg' %}" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
@@ -45,7 +45,7 @@
                 <li><a class="dropdown-item" href="{% url 'profile' request.user.id %}">Profile</a></li>
                 <li><a class="dropdown-item" href="{% url 'logout' %}" id="logout-button">logout</a></li>
                 <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href='profile_settings'>Settings</a></li>
+                <li><a class="dropdown-item" href="{% url 'profile_settings' %}">Settings</a></li>
               </ul>
         {% else %}
           <a class="dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false"> <img src="{% static 'images/blankprofile.jpg' %}" alt="" width="30" height="30"></a>

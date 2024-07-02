@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User 
+from django.contrib import messages
 from .models import Profile, Bolt, SharedBolt
 from .forms import LoginForm, BoltPostForm, ProfilePicForm
 
@@ -156,3 +157,14 @@ def search(request):
 
     return render(request, 'search.html', context_dict)
     
+def delete_bolt(request, pk):
+    if request.user.is_authenticated:
+        bolt = get_object_or_404(Bolt, id=pk)
+
+        ##check that user is the owner of the bolt 
+        if request.user.id ==  bolt.user.id:
+            bolt.delete()     
+            return redirect(request.META.get("HTTP_REFERER")) 
+    else:
+        messages.success(request, ("Please log In"))
+        return redirect(request.META.get("HTTP_REFERER"))
