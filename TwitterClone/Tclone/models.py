@@ -47,8 +47,8 @@ class Bolt(models.Model):
             )
     
 class SharedBolt(models.Model):
-    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
-    bolt = models.ForeignKey(Bolt, on_delete=models.DO_NOTHING)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    bolt = models.ForeignKey(Bolt, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.user} shared {self.bolt}"
