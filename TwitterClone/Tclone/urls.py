@@ -14,4 +14,5 @@ urlpatterns = [
     path('profile_list',views.profile_list, name='profile_list'),
     path('bolt_like/<str:pk>',views.bolt_like, name="bolt_like"),
     path('bolt_share/<str:pk>',views.bolt_share, name="bolt_share"),
+    path('search', views.search, name='search'),
 ]

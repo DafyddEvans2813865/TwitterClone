@@ -137,4 +137,22 @@ def bolt_share(request, pk):
             
             SharedBolt.objects.create(user=request.user, bolt=bolt)
             return redirect(request.META.get("HTTP_REFERER"))
+        
+def search(request):
+    context_dict = {}
+
+    query = request.GET.get('search_query', '')
+    print("works")
+
+    if query:
+        print("user")
+        results = Profile.objects.filter(user__username__icontains = query)  
+    else:
+        print("no user")
+        results = Profile.objects.all()  # handle the case when no search query is provided
+    
+    context_dict['search_query'] = query
+    context_dict['profiles'] = results
+
+    return render(request, 'search.html', context_dict)
     

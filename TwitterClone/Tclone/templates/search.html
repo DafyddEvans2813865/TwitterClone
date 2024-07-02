@@ -1,7 +1,10 @@
 {% extends 'base.html' %}
+
 {% block content %}
+    <h1> Search </h1>
+    <p>Results for: "{{search_query}}"</p>
+
     {% if user.is_authenticated %}
-        <h1> Profile list </h1>
 
         {% if profiles %}
             {% for profile in profiles %}
