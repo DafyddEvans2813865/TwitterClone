@@ -3,16 +3,24 @@
 {% block content %}
 
 <div class = "col-md-6 offset-md-3">
-<h1>Update {{user}}</h1>
+<h1>{{user}}'s Settings</h1>
+<p>Check out all options to change your profile!</p>
 <br/>
 
 <form method = "POST" action="" enctype="multipart/form-data">
 
+    <h3>Profile Picture</h3>
     {% csrf_token %}
-    {{ form.as_p }}
-
-    <br/><br/>
+    {{ Profile_pic_form.as_p }}
+    
     <button type="submit" class="btn btn-secondary">Update Picture!</Picture></button>
+    <br/><br/><br/><br/>
+
+    <h3>Profile Bio</h3>
+    {{ Profile_bio_form.as_p }}
+
+    <button type="submit" class="btn btn-secondary">Update Bio!</Picture></button>
+    <br/><br/>
 
 </form>
 </div>
