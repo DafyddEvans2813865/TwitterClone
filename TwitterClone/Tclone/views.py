@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User 
 from django.contrib import messages
 from .models import Profile, Bolt, SharedBolt
-from .forms import LoginForm, BoltPostForm, ProfilePicForm
+from .forms import LoginForm, BoltPostForm, ProfilePicForm, ProfileBioForm
 
 
 def home(request):
@@ -50,9 +50,6 @@ def profile(request, pk):
 
     return render(request, 'profile.html',context=context_dict)
 
-def register(request):
-    return render(request, "register.html", {})
-
 def login_view(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
@@ -88,7 +85,7 @@ def register(request):
         #create user and redirect
         user = User.objects.create_user(username=username, password=password)
         login(request, user)
-        return redirect('profile')
+        return redirect('home')  
     return render(request, 'register.html', context_dict)
         
 def profile_settings(request):
@@ -97,11 +94,16 @@ def profile_settings(request):
     context_dict['user'] = request.user
     user_profile = Profile.objects.get(user = request.user)
 
-    form = ProfilePicForm(request.POST or None,request.FILES or None, instance=user_profile)
-    context_dict['form'] = form
+    Profile_pic_form = ProfilePicForm(request.POST or None,request.FILES or None, instance=user_profile)
+    Profile_bio_form = ProfileBioForm(request.POST or None,request.FILES or None, instance=user_profile)
+
+    context_dict['Profile_pic_form'] = Profile_pic_form
+    context_dict['Profile_bio_form'] = Profile_bio_form
    
-    if form.is_valid():
-            form.save()
+    if Profile_pic_form.is_valid():
+        Profile_pic_form.save()
+    if Profile_bio_form.is_valid():
+        Profile_bio_form.save()
 
     return render(request,'profile_settings.html',context_dict)
 

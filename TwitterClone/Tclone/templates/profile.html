@@ -4,103 +4,47 @@
 <html>
     {% if user.is_authenticated %}
 
-        <div class="container text-center">
-            <div class="row">
+        <div class="container text-left">
+            <div class="row">    
                 <!-- Profile Picture -->
-                <div class="col-1 text-right">
+                <div class="col-2 text-right mt-4">
                     {% if profile.profile_image %}
-                        <img src="{{ profile.profile_image.url }}" class="img-fluid">
-                    <!--default picture-->
+                        <img src="{{ profile.profile_image.url }}" class="img-fluid rounded-circle">
                     {% else %}
-                        <img src="{% static 'images/blankprofile.jpg' %}" class="img-fluid">
+                        <img src="{% static 'images/blankprofile.jpg' %}" class="img-fluid rounded-circle">
                     {% endif %}
+                    <div class="row mt-3">
+                        
+                        <!-- Follow/Unfollow Button -->
+                        <div class="col-12 text-center">
+                            <form method="post" action="{% url 'profile' profile.user.id %}">
+                                {% csrf_token %}
+                                {% if profile in user.profile.follows.all %}
+                                    <input type="hidden" name="unfollow_user" value="{{ profile.user.id }}">
+                                    <button class="btn btn-primary" type="submit">Following</button>
+                                {% else %}
+                                    <input type="hidden" name="follow_user" value="{{ profile.user.id }}">
+                                    <button class="btn btn-primary" type="submit">Follow</button>
+                                {% endif %}
+                            </form>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="col-8">
-                    <h1>{{ profile.user }}'s Profile!</h1>
-                    <br>
-                    <body>
-                            <!-- Follow or Unfollow buttons -->
-                        <form method="post" action="{% url 'profile' profile.user.id %}">
-                            {% csrf_token %}
-                            {% if profile in user.profile.follows.all %}
-                                <input type="hidden" name="unfollow_user" value="{{ profile_user.id }}">
-                                <button class="btn btn-primary " type="submit">following</button>
-                            {% else %} 
-                                <input type="hidden" name="follow_user" value="{{ profile_user.id }}">
-                                <button class="btn btn-primary" type="submit">follow</button>
-                            {% endif %}
-                        </form>
-                        <br/><br/><br/>
-
-                        <!-- Adding bolts to profile page -->
-                        {% if bolts %}
-                            {%for bolt in bolts %}
-                                <div class="alert alert-warning" role="alert">
-                                    {{bolt.body}}<br/>
-                                    <small class="text-muted">
-                                        By @{{bolt.user}} at {{bolt.created_at}} - {{bolt.get_number_likes}} Likes
-                                        &nbsp;
-
-                                        {% if user in bolt.likes.all %}
-                                            <a href="{% url 'bolt_like' bolt.id %}">
-                                            <i class="fa-solid fa-heart" style="color:red"></i></a>
-                                        {% else %}
-                                            <a href="{% url 'bolt_like' bolt.id %}">
-                                            <i class="fa fa-heart-o" style="color:red"></i></a>
-                                        {% endif %}
-                                        &nbsp;
-
-                                        <a href="{% url 'bolt_share' bolt.id %}">
-                                        <i class="fa-solid fa-share" style="color:grey" ></i></a>
-
-                                        <!-- if Profile page belongs to user allow user to delete bolts -->
-                                        {% if user == profile.user %}
-                                            &nbsp;&nbsp;&nbsp;
-                                            <a href="{% url 'delete_bolt' bolt.id %}">
-                                                <i class="fas fa-trash-alt" style="color:grey" ></i>
-                                            </a>
-                                        {% endif %}
-                                                               
-                                    </small> 
-                                </div>
-                            {% endfor %}
-                        {% endif %}
-
-                        <!-- Display Shared Bolts -->
-                        <h3>Shared Bolts</h3>
-                        {% if shared_bolts %}
-                            {% for shared_bolt in shared_bolts %}
-                                <div class="alert alert-info" role="alert">
-                                    {{ shared_bolt.bolt.body }}<br/>
-                                    <small class="text-muted">
-                                        Shared by @{{ shared_bolt.user.username }}<br/>
-                                        Shared {{ shared_bolt.bolt.created_at }} - Originally by @{{ shared_bolt.bolt.user.username }}  - {{ shared_bolt.bolt.get_number_likes }} Likes
-
-                                        {% if user in shared_bolt.bolt.likes.all %}
-                                            <a href="{% url 'bolt_like' shared_bolt.bolt.id %}">
-                                                <i class="fa-solid fa-heart" style="color:red"></i>
-                                            </a>
-                                        {% else %}
-                                            <a href="{% url 'bolt_like' shared_bolt.bolt.id %}">
-                                                <i class="fa fa-heart-o" style="color:red"></i>
-                                            </a>
-                                        {% endif %}
-                                    </small>
-                                </div>
-                            {% endfor %}
-                        {% else %}
-                            <p>No shared bolts found.</p>
-                        {% endif %}
-
-                    </body>
-                    
+                
+                <!-- Profile Bio -->
+                <div class="col-5 text-left mt-3">
+                    <h1>{{ profile.user.username }}'s Profile!</h1>
+                    </br>
+                    <p>{{ profile.profile_bio }}</p>
                 </div>
+                
+                <!-- Spacer -->
+                <div class="col-1"></div> <!-- Adjust the width as needed -->
 
-                <div class="col-3">
+                <div class="col-4">
                     <body>
                         <!-- Profile Following list -->  
-                        <div class="card" style="width: 18rem;">
+                        <div class="card " style="width: 18rem;">
                             <div class="card-header" style="background-color: #ebd512;">
                                 {{ profile.user }} follows:
                             </div>
@@ -137,17 +81,75 @@
                                 <p>{{profile.user}} is not followed by anyone yet.</p>
                             {% endif %}
                         </div>
-                        <ul>
-                            
-                            
-                        </ul>
+                        
                         
                     </body>
                 </div>
 
+                
             </div>
-        </div>
 
+            <div class="row"> 
+                    <!-- Adding bolts to profile page -->
+                    <h3>Posted Bolts</h3>
+                    {% if bolts %}
+                        {%for bolt in bolts %}
+                            <div class="alert alert-warning" role="alert">
+                                {{bolt.body}}<br/>
+                                <small class="text-muted">
+                                    By @{{bolt.user}} at {{bolt.created_at}} - {{bolt.get_number_likes}} Likes
+                                    &nbsp;
+                                    {% if user in bolt.likes.all %}
+                                        <a href="{% url 'bolt_like' bolt.id %}">
+                                        <i class="fa-solid fa-heart" style="color:red"></i></a>
+                                    {% else %}
+                                        <a href="{% url 'bolt_like' bolt.id %}">
+                                        <i class="fa fa-heart-o" style="color:red"></i></a>
+                                    {% endif %}
+                                    &nbsp;
+
+                                    <a href="{% url 'bolt_share' bolt.id %}">
+                                    <i class="fa-solid fa-share" style="color:grey" ></i></a>
+                                        <!-- if Profile page belongs to user allow user to delete bolts -->
+                                        {% if user == profile.user %}
+                                            &nbsp;&nbsp;&nbsp;
+                                            <a href="{% url 'delete_bolt' bolt.id %}">
+                                                <i class="fas fa-trash-alt" style="color:grey" ></i>
+                                            </a>
+                                        {% endif %}
+                                                               
+                                </small> 
+                            </div>
+                            {% endfor %}
+                        {% endif %}
+
+                        <!-- Display Shared Bolts -->
+                        <h3>Shared Bolts</h3>
+                        {% if shared_bolts %}
+                            {% for shared_bolt in shared_bolts %}
+                                <div class="alert alert-info" role="alert">
+                                    {{ shared_bolt.bolt.body }}<br/>
+                                    <small class="text-muted">
+                                        Shared by @{{ shared_bolt.user.username }}<br/>
+                                        Shared {{ shared_bolt.bolt.created_at }} - Originally by @{{ shared_bolt.bolt.user.username }}  - {{ shared_bolt.bolt.get_number_likes }} Likes
+
+                                        {% if user in shared_bolt.bolt.likes.all %}
+                                            <a href="{% url 'bolt_like' shared_bolt.bolt.id %}">
+                                                <i class="fa-solid fa-heart" style="color:red"></i>
+                                            </a>
+                                        {% else %}
+                                            <a href="{% url 'bolt_like' shared_bolt.bolt.id %}">
+                                                <i class="fa fa-heart-o" style="color:red"></i>
+                                            </a>
+                                        {% endif %}
+                                    </small>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <p>No shared bolts found.</p>
+                        {% endif %}
+            </div>
+        </div>       
 
         
 
