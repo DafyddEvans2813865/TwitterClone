@@ -20,7 +20,11 @@
                 <div class="col-md-8">
                     <div class="card-body">
                     <h5 class="card-title">@{{profile.user.username}}</h5>
-                    <p class="card-text">this is where we could add something fun!</p></br>
+                    {% if profile.profile_bio %}
+                        <p class="card-text">{{profile.profile_bio}}</p></br>
+                    {% else %}
+                        <p class="card-text">Boring user has no bio... Remind them to add one!</p></br>
+                    {% endif %}
                     <a class="btn btn-primary" href="{% url 'profile' profile.user.id %}" role="button">See Profile</a>
                     <p class="card-text"><small class="text-body-secondary">Last updated {{profile.data_modified}}</small></p>
                     </div>

@@ -43,7 +43,7 @@ class Bolt(models.Model):
         return(
             f"{self.user}, "
             f"{self.body}... "
-            f"({self.created_at:%d-%m-%Y %H:%M}): "
+            f"({self.created_at:%d/%m/%Y-%H:%M}): "
             )
     
 class SharedBolt(models.Model):

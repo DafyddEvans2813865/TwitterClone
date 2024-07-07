@@ -1,7 +1,36 @@
 {% extends 'base.html' %}
+{% load static %} 
 
 {% block content %}
-    <h1> This is the about page </h1>
-    <h2>How are you seeing this?!!!</h2>
-    <p>seriously how! stop...</p>
+        <h1>About Us</h1>
+        <p>
+            Zappy is a dynamic and engaging social media platform designed to bring people together.
+            Inspired by the simplicity and connectivity of Twitter, Zappy allows users to share their thoughts, ideas, and moments with a wide audience in a concise and interactive format. 
+            Our platform boasts an intuitive user interface to ensure a safe and enjoyable experience for all.
+        </p>
+        </br>
+        
+    <div class="container d-flex justify-content-center align-items-center">
+        <div class="card">
+            <div class="row g-0">
+                <div class="col-md-4">    
+                    <!-- Display default profile-->
+                    <img src= "{% static 'images/founder.jpg' %}" class="img-fluid rounded-start" alt="...">
+                </div>
+
+                <div class="col-md-8">
+                    <div class="card-body">
+                    <h5 class="card-title">Founder: Dafydd Evans</h5>
+                    </br>
+                        <p class="card-text">
+                            "Creating Zappy has been a passion project for me, driven by my desire to gain hands-on experience in web design and development.
+                            My goal with Zappy is to not only create a functional and enjoyable platform but also to grow as a web designer. 
+                            This journey has been incredibly rewarding, and I'm excited to see where it leads me next."
+                        </p></br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
