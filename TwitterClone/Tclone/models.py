@@ -22,8 +22,8 @@ def create_profile(sender, instance, created, **kwargs):
         user_profile = Profile(user=instance)
         user_profile.save()
 
-        #follow self and myself
-        user_profile.follows.set(instance.profile.id)
+        #follow self 
+        user_profile.follows.set([instance.profile.id])
         user_profile.save()
 
 #tweeting model 

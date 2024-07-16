@@ -53,7 +53,8 @@ def create_bolts():
         "Hello. This platform seems like a great place to share insights and learn from others. Excited to get started!",
         "Greetings, I'm passionate about environmental issues and look forward to discussing them here.",
         "Hey, I love sharing creative ideas and projects. Can't wait to see what this community has to offer!",
-        "Hi, I'm interested in sports and fitness, and I hope to connect with others who share the same passion!"
+        "Hi, I'm interested in sports and fitness, and I hope to connect with others who share the same passion!",
+        "Hey, I love sharing creative ideas and projects. Can't wait to see what this community has to offer!"
     ]
     
     for user, content in zip(users, bolts_content):

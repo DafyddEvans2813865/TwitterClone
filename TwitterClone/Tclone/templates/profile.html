@@ -41,8 +41,9 @@
                 <!-- Spacer -->
                 <div class="col-1"></div> 
 
-                <div class="col-4">
+                <div class="col-4 mt-4">
                     <body>
+                        
                         <!-- Profile Following list -->  
                         <div class="card " style="width: 18rem;">
                             <div class="card-header" style="background-color: #ebd512;">
@@ -50,12 +51,16 @@
                             </div>
 
                             {% if profile.follows %}
-                                <ul class="list-group list-group-flush">
+                                <ul class="list-group list-group-flush">    
                                     <ul>
-                                        {% for followed_user in profile.follows.all %}
+                                        {% for followed_user in profile.follows.all|slice:":3" %}
                                             <a href="{% url 'profile' followed_user.user.id %}">@{{ followed_user }}</a></br>
                                         {% endfor %}
                                     </ul>
+                                    
+                                    {% if profile.follows.count > 3 %}
+                                        <button class="btn btn-sm mt-2" style="background-color: #e0e0e0;">Show More</button>
+                                    {% endif %}
                                 </ul>
                             {% else %}
                                 <p>{{profile.user}} are not following anyone yet.</p>
@@ -69,14 +74,18 @@
                                 {{ profile.user }} is followed by:</br>
                             </div>
 
-                            {% if profile.follows %}
+                            {% if profile.followed_by %}
                                 <ul class="list-group list-group-flush">
                                     <ul>
-                                        {% for followed_user in profile.followed_by.all %}
+                                        {% for followed_user in profile.followed_by.all|slice:":3" %}
                                         <a href="{% url 'profile' followed_user.user.id %}">@{{ followed_user }}</a></br>
-                                        
                                         {% endfor %}
                                     </ul>
+
+                                    {% if profile.followed_by.count > 3 %}
+                                        <button class="btn btn-sm mt-2" style="background-color: #e0e0e0;">Show More</button>
+                                    {% endif %}
+
                             {% else %}
                                 <p>{{profile.user}} is not followed by anyone yet.</p>
                             {% endif %}
@@ -89,12 +98,14 @@
                 
             </div>
 
-            <div class="row"> 
+            <div class="row mt-3"> 
                     <!-- Adding bolts to profile page -->
-                    <h3>Posted Bolts</h3>
+                    <h3>Posted Bolts</h3></br></br>
                     {% if bolts %}
                         {%for bolt in bolts %}
-                            <div class="alert alert-warning" role="alert">
+                        <!-- Spacer -->
+                        <div class="col-1"></div> 
+                            <div class="alert alert-warning col-10" role="alert">
                                 {{bolt.body}}<br/>
                                 <small class="text-muted">
                                     By @{{bolt.user}} at {{bolt.created_at}} - {{bolt.get_number_likes}} Likes
@@ -120,18 +131,22 @@
                                                                
                                 </small> 
                             </div>
-                            {% endfor %}
-                        {% endif %}
+                        <!-- Spacer -->
+                        <div class="col-1"></div> 
+                        {% endfor %}
+                    {% endif %}
 
                         <!-- Display Shared Bolts -->
                         <h3>Shared Bolts</h3>
                         {% if shared_bolts %}
                             {% for shared_bolt in shared_bolts %}
-                                <div class="alert alert-info" role="alert">
+                            <!-- Spacer -->
+                            <div class="col-1"></div>
+                                <div class="alert alert-info col-10" role="alert">
                                     {{ shared_bolt.bolt.body }}<br/>
                                     <small class="text-muted">
                                         Shared by @{{ shared_bolt.user.username }}<br/>
-                                        Shared {{ shared_bolt.bolt.created_at }} - Originally by @{{ shared_bolt.bolt.user.username }}  - {{ shared_bolt.bolt.get_number_likes }} Likes
+                                        {{ shared_bolt.bolt.created_at }} - Originally by @{{ shared_bolt.bolt.user.username }}  - {{ shared_bolt.bolt.get_number_likes }} Likes
 
                                         {% if user in shared_bolt.bolt.likes.all %}
                                             <a href="{% url 'bolt_like' shared_bolt.bolt.id %}">
@@ -144,6 +159,7 @@
                                         {% endif %}
                                     </small>
                                 </div>
+                            <div class="col-1"></div>
                             {% endfor %}
                         {% else %}
                             <p>No shared bolts found.</p>
