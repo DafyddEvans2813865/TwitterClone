@@ -8,6 +8,7 @@ Commands -
   Before running the website, execute these commands:
   
     python populate_db.py
+    python manage.py runserver
 
 Contact -
     For questions or suggestions, contact:
