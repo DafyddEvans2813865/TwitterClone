@@ -10,8 +10,10 @@ Commands -
     python populate_db.py
 
 Contact -
-  For questions or suggestions, contact:
+    For questions or suggestions, contact:
 
-  Name: Dafydd Evans
-  Email: evansdafyddm@gmail.com
-  GitHub: DafyddEvans2813865
+    Name: Dafydd Evans
+  
+    Email: evansdafyddm@gmail.com
+  
+    GitHub: DafyddEvans2813865
